@@ -1,3 +1,8 @@
+img{ 
+  max-width: 100px; 
+  display: block;
+}
+
 # ASCII-Movie
 This is a movie to ascii converter !
 
@@ -8,9 +13,9 @@ It you want to try you'll need a little bit of python and just edit the imgLib.p
 
 Before :
 
-![Before](./swag.jpg =250x)
+![Before](./swag.jpg)
 
 After :
 
-![After](swag.jpg.asciip.png =250x)
+![After](swag.jpg.asciip.png)
 
