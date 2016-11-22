@@ -184,7 +184,7 @@ class SimplePicture():
     def invert_color(self):
         temp = []
         for pix in self.get_data():
-            temp.append([255 - i for i in pix.get_data()])
+            temp.append(SimplePixel([255 - i for i in pix.get_data()]))
         self.set_data(temp)
         return self
 
@@ -261,7 +261,7 @@ class SimplePicture():
                 if val < 0:
                     val = 0
                 temppix.append(val)
-            temp.append(temppix)
+            temp.append(SimplePixel(temppix))
         self.set_data(temp)
         return self
 
@@ -306,7 +306,7 @@ class SimplePicture():
         return temp
 
     def copy(self):
-        return SimplePicture(self.get_data(), size=self.get_size())
+        return SimplePicture(self.get_data(), dtype="SP", size=self.get_size())
 
 
 class ASCIIPicture():
@@ -380,13 +380,15 @@ class ASCIIPicture():
             draw.text((int((i%self.get_width())*corrrect_fonsize), int((i//self.get_height())*corrrect_fonsize)), self.get_pixel(i), fg.get_data_as_tuple(), font=font)
         return img
 
-fname="morp2.jpeg"
+# MAIN PROG
+fname="Morpheus2.jpg"
 img1 = Image.open(fname)
 raw_img_rbg = list(img1.getdata())
 size = SimpleTuple(img1.width, img1.height)
 myimg = SimplePicture(raw_img_rbg, "A", size)
-ok=myimg.resize_width(100).to_ascii().to_Image().save(fname+".asciip.png")
+ok=myimg.resize_width(100).change_contrast(2).invert_color().to_ascii().to_Image(fg=SimpleTuple(127,255,0),bg=SimpleTuple(0,0,0)).save(fname+".asciip.png")
 
+# MATRIX COLORS : fg=SimpleTuple(127,255,0),bg=SimpleTuple(0,0,0)
 """
 TODO :
 - crop
