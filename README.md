@@ -8,9 +8,9 @@ It you want to try you'll need a little bit of python and just edit the imgLib.p
 
 Before :
 
-![Before](./swag.jpg "Before" =250px)
+![Before](./swag.jpg =250x)
 
 After :
 
-![After](swag.jpg.asciip.png "After" =250px)
+![After](swag.jpg.asciip.png =250x)
 
