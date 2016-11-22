@@ -1,8 +1,3 @@
-img{ 
-  max-width: 100px; 
-  display: block;
-}
-
 # ASCII-Movie
 This is a movie to ascii converter !
 
@@ -13,9 +8,8 @@ It you want to try you'll need a little bit of python and just edit the imgLib.p
 
 Before :
 
-![Before](./swag.jpg)
+<img src="https://github.com/favicon.ico" width="100">
 
 After :
 
-![After](swag.jpg.asciip.png)
-
+<img src="https://github.com/favicon.ico" width="100">
