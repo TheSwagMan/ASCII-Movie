@@ -358,6 +358,14 @@ class ASCIIPicture():
         self._data[i] = data
 
     def __str__(self):
+        return self.to_string()
+
+    def save(self, filepath):
+        file = open(filepath, "w")
+        file.write(self.to_string())
+        return self
+
+    def to_string(self):
         temp = ""
         for i in range(self.get_size_mul()):
             c = self.get_pixel(i)
@@ -365,11 +373,6 @@ class ASCIIPicture():
             if i % self.get_size().get_val(0) == self.get_size().get_val(0) - 1:
                 temp += "\n"
         return temp
-
-    def save(self, filepath):
-        file = open(filepath, "w")
-        file.write(str(self))
-        return self
 
     def to_Image(self,font="fonts/UbuntuMono-R.ttf",fontsize=12,bg=SimpleTuple(255,255,255),fg=SimpleTuple(0,0,0)):
         corrrect_fonsize=0.8*fontsize
@@ -381,7 +384,7 @@ class ASCIIPicture():
         return img
 
 # MAIN PROG
-fname="Morpheus2.jpg"
+fname = "swag.jpg"
 img1 = Image.open(fname)
 raw_img_rbg = list(img1.getdata())
 size = SimpleTuple(img1.width, img1.height)
