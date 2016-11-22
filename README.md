@@ -8,9 +8,9 @@ It you want to try you'll need a little bit of python and just edit the imgLib.p
 
 Before :
 
-![Before](https://raw.githubusercontent.com/TheSwagMan/ASCII-Movie/master/swag.jpg)
+![Before](https://raw.githubusercontent.com/TheSwagMan/ASCII-Movie/master/swag.jpg "Before")
 
 After :
 
-![After](https://raw.githubusercontent.com/TheSwagMan/ASCII-Movie/master/swag.jpg.asciip.png)
+![After](https://raw.githubusercontent.com/TheSwagMan/ASCII-Movie/master/swag.jpg.asciip.png "After")
 
