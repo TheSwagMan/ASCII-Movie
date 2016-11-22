@@ -8,8 +8,8 @@ It you want to try you'll need a little bit of python and just edit the imgLib.p
 
 Before :
 
-<img src="https://github.com/favicon.ico" width="100">
+<img src="https://raw.githubusercontent.com/TheSwagMan/ASCII-Movie/master/swag.jpg" width="300">
 
 After :
 
-<img src="https://github.com/favicon.ico" width="100">
+<img src="https://raw.githubusercontent.com/TheSwagMan/ASCII-Movie/master/swag.jpg.asciip.png" width="300">
