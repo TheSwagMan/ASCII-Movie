@@ -7,5 +7,6 @@
     <orderEntry type="module" module-name="RequestsAndCo" />
     <orderEntry type="module" module-name="PythonProjects" />
     <orderEntry type="module" module-name="SimpleFuzzer" />
+    <orderEntry type="module" module-name="NymphomathTuring" />
   </component>
 </module>

@@ -1,16 +1,24 @@
 from moviepy.editor import VideoFileClip
 from imgLib import SimplePicture
-from os import listdir, remove
-from PIL import Image
 
 one_over = 5
 mym = VideoFileClip("sample2.mp4")
+frate = mym.fps // one_over
 frames = list(mym.iter_frames())
-print("Loaded !\n")
+outfile = open("film-test.ascmov", "w")
 noff = len(frames) // one_over
+first_frame = SimplePicture(frames[0].tolist(), dtype="2D")
+outfile.write(
+    str(first_frame.get_height()) + "," + str(first_frame.get_width()) + "\n" + str(frate) + "," + str(noff) + "\n")
+print("Loaded !\n")
 for i in range(noff):
     print("\033[K", end="")
     print("\033[FWorking " + str(i + 1) + "/" + str(noff) + "...")
     tempimg = SimplePicture(frames[i * one_over].tolist(), dtype="2D")
-    tempimg.resize_width(60).change_contrast(2).invert_color()
-    tempimg.to_ascii().save("temp_frames/ascii" + str(i) + ".txt")
+    tempimg.resize_height(30).change_contrast(2).invert_color().to_ascii().to_Image().show()
+    input()
+    tempimg.resize_height(30).change_contrast(2).invert_color()
+    ascimg = tempimg.to_ascii()
+    ascimg.save("temp_frames/ascii" + str(i) + ".txt")
+    outfile.write(ascimg.to_string() + "\n")
+outfile.close()

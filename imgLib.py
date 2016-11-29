@@ -17,6 +17,8 @@ class SimpleTuple():
                 self.set_data(data)
                 self.set_size(len(data))
 
+    def __reversed__(self):
+        return reversed([e for e in self.get_data()])
 
     def get_mul(self):
         m=1
