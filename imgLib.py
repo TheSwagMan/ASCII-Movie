@@ -386,18 +386,20 @@ class ASCIIPicture():
             draw.text((int((i%self.get_width())*corrrect_fonsize), int((i//self.get_height())*corrrect_fonsize)), self.get_pixel(i), fg.get_data_as_tuple(), font=font)
         return img
 
-# MAIN PROG
-fname = "swag.jpg"
-img1 = Image.open(fname)
-raw_img_rbg = list(img1.getdata())
-size = SimpleTuple(img1.width, img1.height)
-myimg = SimplePicture(raw_img_rbg, "A", size)
-ok = myimg.resize_width(100).change_contrast(2).invert_color().to_ascii().save(fname + ".asciip")
 
-# MATRIX COLORS : fg=SimpleTuple(127,255,0),bg=SimpleTuple(0,0,0)
-"""
-TODO :
-- crop
-- better resize
+if __name__ == "__main__":
+    # MAIN PROG
+    fname = "swag.jpg"
+    img1 = Image.open(fname)
+    raw_img_rbg = list(img1.getdata())
+    size = SimpleTuple(img1.width, img1.height)
+    myimg = SimplePicture(raw_img_rbg, "A", size)
+    ok = myimg.resize_width(100).change_contrast(2).invert_color().to_ascii().save(fname + ".asciip")
 
-"""
+    # MATRIX COLORS : fg=SimpleTuple(127,255,0),bg=SimpleTuple(0,0,0)
+    """
+    TODO :
+    - crop
+    - better resize
+
+    """
