@@ -14,10 +14,3 @@ for i in range(noff):
     tempimg = SimplePicture(frames[i * one_over].tolist(), dtype="2D")
     tempimg.resize_width(60).change_contrast(2).invert_color()
     tempimg.to_ascii().save("temp_frames/ascii" + str(i) + ".txt")
-
-exit()
-mym.write_images_sequence("temp_frames/frame%05d.png", verbose=False)
-for imname in listdir("temp_frames"):
-    tempimg = SimplePicture(Image.open("temp_frames/" + imname).getdata(), dtype="A")
-    remove("temp_frames/" + imname)
-    tempimg.to_ascii().save("temp_frames/ascii" + imname + ".txt")

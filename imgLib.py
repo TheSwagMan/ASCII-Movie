@@ -374,7 +374,6 @@ class ASCIIPicture():
             temp += c
             if i % self.get_size().get_val(0) == self.get_size().get_val(0) - 1:
                 temp += "\n"
-        print(self._data, "\n", temp)
         return temp
 
     def to_Image(self,font="fonts/UbuntuMono-R.ttf",fontsize=12,bg=SimpleTuple(255,255,255),fg=SimpleTuple(0,0,0)):
