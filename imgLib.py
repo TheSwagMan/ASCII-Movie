@@ -104,18 +104,20 @@ class SimplePicture():
             data = []
         if dtype == "SP":
             self.set_data(data)
+            self.set_size(size)
         if dtype == "A":
             self.set_data_from_array(data)
+            self.set_size(size)
         if dtype == "2D":
             self.set_data_from_2d(data)
-        self.set_size(size)
 
     def set_data_from_2d(self, data):
         temp = []
         for line in data:
             for elem in line:
-                temp.append(elem)
+                temp.append(SimplePixel(elem))
         self.set_data(temp)
+        self.set_size(SimpleTuple(len(data[0]), len(data)))
         return self
 
     def set_data_from_array(self, data):
@@ -372,6 +374,7 @@ class ASCIIPicture():
             temp += c
             if i % self.get_size().get_val(0) == self.get_size().get_val(0) - 1:
                 temp += "\n"
+        print(self._data, "\n", temp)
         return temp
 
     def to_Image(self,font="fonts/UbuntuMono-R.ttf",fontsize=12,bg=SimpleTuple(255,255,255),fg=SimpleTuple(0,0,0)):
@@ -389,7 +392,7 @@ img1 = Image.open(fname)
 raw_img_rbg = list(img1.getdata())
 size = SimpleTuple(img1.width, img1.height)
 myimg = SimplePicture(raw_img_rbg, "A", size)
-ok=myimg.resize_width(100).change_contrast(2).invert_color().to_ascii().to_Image(fg=SimpleTuple(127,255,0),bg=SimpleTuple(0,0,0)).save(fname+".asciip.png")
+ok = myimg.resize_width(100).change_contrast(2).invert_color().to_ascii().save(fname + ".asciip")
 
 # MATRIX COLORS : fg=SimpleTuple(127,255,0),bg=SimpleTuple(0,0,0)
 """
