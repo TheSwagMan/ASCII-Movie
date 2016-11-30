@@ -1,3 +1,4 @@
+#! /usr/bin/python3
 import curses, time
 from imgLib import SimpleTuple
 
@@ -63,7 +64,8 @@ class MovieReader():
             self.win.addstr(self.movieparser.get_frame(i))
             self.win.refresh()
         except:
-            print("Error !")
+            print("The file is too big for the current window !")
+            exit(1)
 
     def clear_screen(self):
         self.win.clear()

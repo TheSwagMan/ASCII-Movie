@@ -1,3 +1,4 @@
+#! /usr/bin/python3
 from PIL import Image,ImageDraw,ImageFont
 from symbolBenchmark import FontBenchmark
 import os
@@ -373,7 +374,7 @@ class ASCIIPicture():
         temp = ""
         for i in range(self.get_size_mul()):
             c = self.get_pixel(i)
-            temp += c * round(self.get_size().get_val(0) / self.get_size().get_val(1), 0)
+            temp += c * int(round(self.get_size().get_val(0) / self.get_size().get_val(1)))
             if i % self.get_size().get_val(0) == self.get_size().get_val(0) - 1:
                 temp += "\n"
         return temp
