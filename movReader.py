@@ -48,24 +48,24 @@ class MovieReader():
 
     def play(self, loop=True):
         temploop = loop
-        loop = True
-        while loop:
+        self.loop = True
+        while self.loop:
             for i in range(self.movieparser.get_lenght()):
                 self.display_frame(i)
                 time.sleep(1 / self.movieparser.get_frame_rate())
             if not temploop:
-                loop = False
+                self.loop = False
 
     def display_frame(self, i):
         self.clear_screen()
         try:
-            y, x = self.win.getmaxyx()
-            print(y, x, self.movieparser.get_size())
             self.win.addstr(self.movieparser.get_frame(i))
             self.win.refresh()
         except:
+            self.close()
+            self.loop = False
             print("The file is too big for the current window !")
-            exit(1)
+            exit()
 
     def clear_screen(self):
         self.win.clear()
@@ -78,6 +78,11 @@ if __name__ == "__main__":
     a = MovieReader("film-test.ascmov")
     try:
         a.play()
+    except KeyboardInterrupt:
+        a.close()
+        print("Closed by <Ctrl+C> !")
+        exit()
     except:
         a.close()
-        exit(1)
+        print("Unknown error !")
+        exit()
