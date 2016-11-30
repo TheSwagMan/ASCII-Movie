@@ -12,7 +12,7 @@ class SimpleTuple():
             data = []
         if len(data)>0:
             if type(data[0])==tuple or type(data[0])==list:
-                self.set_data(data[0])
+                self.set_data(list(data[0]))
                 self.set_size(len(data[0]))
             else:
                 self.set_data(data)
@@ -35,9 +35,7 @@ class SimpleTuple():
         return self
 
     def multiply_n(self, x, n):
-        temp = [e for e in self.get_data()]
-        temp[n] = int(temp[n] * x)
-        self.set_data(temp)
+        self.set_data_n(self.get_data_n(n) * x, n)
         return self
 
     def add(self,x):
@@ -66,8 +64,15 @@ class SimpleTuple():
         self._data = data
         return self
 
+    def set_data_n(self, v, n):
+        self._data[n] = v
+        return self
+
     def get_data(self) -> list:
         return self._data
+
+    def get_data_n(self, n):
+        return self._data[n]
 
     def get_data_as_int(self) -> list:
         temp=[]
@@ -289,11 +294,10 @@ class SimplePicture():
         return self
 
     def to_ascii(self,font="fonts/UbuntuMono-R.ttf"):
-        print(self.get_size(),
-              self.get_size().get_multiplied_n(int(round(self.get_size().get_val(0) / self.get_size().get_val(1))), 0),
-              int(round(self.get_size().get_val(0) / self.get_size().get_val(1))))
-        greycopy = self.copy().to_grey_scale().resize(
-            self.get_size().get_multiplied_n(int(round(self.get_size().get_val(0) / self.get_size().get_val(0))), 1))
+        ratio = int(round(self.get_size().get_val(0) / self.get_size().get_val(1)))
+        corrected_size = self.get_size().get_multiplied_n(ratio, 0)
+        print(self.get_size(), corrected_size, ratio)
+        greycopy = self.copy().to_grey_scale().resize(corrected_size)
         benchsavepath=font+".bench"
         if not os.path.exists(benchsavepath):
             bensh=FontBenchmark(font)
