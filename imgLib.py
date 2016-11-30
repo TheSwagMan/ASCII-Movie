@@ -34,6 +34,12 @@ class SimpleTuple():
         self.set_data(temp)
         return self
 
+    def multiply_n(self, x, n):
+        temp = [e for e in self.get_data()]
+        temp[n] = int(temp[n] * x)
+        self.set_data(temp)
+        return self
+
     def add(self,x):
         temp=[]
         for e in self.get_data():
@@ -46,6 +52,9 @@ class SimpleTuple():
 
     def get_multiplied(self,x):
         return self.copy().multiply(x)
+
+    def get_multiplied_n(self, x, n):
+        return self.copy().multiply_n(x, n)
 
     def get_added(self,x):
         return self.copy().add(x)
@@ -75,6 +84,7 @@ class SimpleTuple():
 
     def set_size(self, size):
         self._size = size
+        return self
 
     def get_size(self):
         return self._size
@@ -86,8 +96,11 @@ class SimpleTuple():
         return tuple(k for k in self.get_data_as_int())
 
     def to_int(self):
+        temp = []
         for e in self.get_data():
-            e=int(e)
+            temp.append(int(e))
+        self.set_data(temp)
+        return self
 
 
 class SimplePixel(SimpleTuple):
@@ -159,7 +172,7 @@ class SimplePicture():
     def get_data_as_int_tuple(self):
         temp=[]
         for p in self.get_data():
-            temp.append(p.get_data_as_tuple())
+            temp.append(p.get_data_as_int_tuple())
         return temp
 
     def get_size(self) -> SimpleTuple:
@@ -209,7 +222,7 @@ class SimplePicture():
 
     def resize(self, size):
         a=self.to_Image()
-        a=a.resize(size.get_data_as_tuple())
+        a = a.resize(size.get_data_as_int_tuple())
         self.set_data_from_array(list(a.getdata()))
         self.set_size(size)
         """
@@ -276,7 +289,11 @@ class SimplePicture():
         return self
 
     def to_ascii(self,font="fonts/UbuntuMono-R.ttf"):
-        greycopy = self.copy().to_grey_scale()
+        print(self.get_size(),
+              self.get_size().get_multiplied_n(int(round(self.get_size().get_val(0) / self.get_size().get_val(1))), 0),
+              int(round(self.get_size().get_val(0) / self.get_size().get_val(1))))
+        greycopy = self.copy().to_grey_scale().resize(
+            self.get_size().get_multiplied_n(int(round(self.get_size().get_val(0) / self.get_size().get_val(0))), 1))
         benchsavepath=font+".bench"
         if not os.path.exists(benchsavepath):
             bensh=FontBenchmark(font)
@@ -301,7 +318,7 @@ class SimplePicture():
         return ASCIIPicture(temp, self.get_size())
 
     def to_Image(self):
-        temp = Image.new("RGB", self.get_size().get_data_as_tuple())
+        temp = Image.new("RGB", self.get_size().get_data_as_int_tuple())
         temp.putdata(self.get_data_as_int_tuple())
         """
         for i in range(self.get_size_mul()):
@@ -374,7 +391,7 @@ class ASCIIPicture():
         temp = ""
         for i in range(self.get_size_mul()):
             c = self.get_pixel(i)
-            temp += c * int(round(self.get_size().get_val(0) / self.get_size().get_val(1)))
+            temp += c
             if i % self.get_size().get_val(0) == self.get_size().get_val(0) - 1:
                 temp += "\n"
         return temp

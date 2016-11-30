@@ -7,7 +7,7 @@ newsize = 35
 mym = VideoFileClip("sample2.mp4")
 frate = mym.fps // one_over
 frames = list(mym.iter_frames())
-outfile = open("film-test.ascmov", "w")
+outfile = open("sample2.ascmov", "w")
 noff = len(frames) // one_over
 first_frame = SimplePicture(frames[0].tolist(), dtype="2D").resize_height(newsize)
 outfile.write(
