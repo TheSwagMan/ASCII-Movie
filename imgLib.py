@@ -373,7 +373,7 @@ class ASCIIPicture():
         temp = ""
         for i in range(self.get_size_mul()):
             c = self.get_pixel(i)
-            temp += c
+            temp += c * round(self.get_size().get_val(0) / self.get_size().get_val(1), 0)
             if i % self.get_size().get_val(0) == self.get_size().get_val(0) - 1:
                 temp += "\n"
         return temp

@@ -56,6 +56,7 @@ class MovieReader():
                 loop = False
 
     def display_frame(self, i):
+        self.clear_screen()
         try:
             y, x = self.win.getmaxyx()
             print(y, x, self.movieparser.get_size())
