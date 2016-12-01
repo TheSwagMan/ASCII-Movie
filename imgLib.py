@@ -296,7 +296,6 @@ class SimplePicture():
     def to_ascii(self,font="fonts/UbuntuMono-R.ttf"):
         ratio = int(round(self.get_size().get_val(0) / self.get_size().get_val(1)))
         corrected_size = self.get_size().get_multiplied_n(ratio, 0)
-        print(self.get_size(), corrected_size, ratio)
         greycopy = self.copy().to_grey_scale().resize(corrected_size)
         benchsavepath=font+".bench"
         if not os.path.exists(benchsavepath):
@@ -319,7 +318,7 @@ class SimplePicture():
             if abs(ascii_tab[j - 1][0] - pix) < abs(ascii_tab[j][0] - pix):
                 j -= 1
             temp += ascii_tab[j][1]
-        return ASCIIPicture(temp, self.get_size())
+        return ASCIIPicture(temp, corrected_size)
 
     def to_Image(self):
         temp = Image.new("RGB", self.get_size().get_data_as_int_tuple())
@@ -412,7 +411,7 @@ class ASCIIPicture():
 
 if __name__ == "__main__":
     # MAIN PROG
-    fname = "swag.jpg"
+    fname = sys.argv[1]
     img1 = Image.open(fname)
     raw_img_rbg = list(img1.getdata())
     size = SimpleTuple(img1.width, img1.height)

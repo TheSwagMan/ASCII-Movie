@@ -1,6 +1,9 @@
 #! /usr/bin/python3
 import curses, time
+from _curses import error
 from imgLib import SimpleTuple
+import sys
+
 
 class MovieParser():
     def __init__(self, fn):
@@ -51,6 +54,8 @@ class MovieReader():
         self.loop = True
         while self.loop:
             for i in range(self.movieparser.get_lenght()):
+                if not self.loop:
+                    break
                 self.display_frame(i)
                 time.sleep(1 / self.movieparser.get_frame_rate())
             if not temploop:
@@ -61,11 +66,10 @@ class MovieReader():
         try:
             self.win.addstr(self.movieparser.get_frame(i))
             self.win.refresh()
-        except:
+        except error:
             self.close()
             self.loop = False
             print("The file is too big for the current window !")
-            exit()
 
     def clear_screen(self):
         self.win.clear()
@@ -73,16 +77,12 @@ class MovieReader():
     def close(self):
         curses.endwin()
 
-
 if __name__ == "__main__":
-    a = MovieReader("film-test.ascmov")
+    a = MovieReader(sys.argv[1])
     try:
         a.play()
     except KeyboardInterrupt:
-        a.close()
         print("Closed by <Ctrl+C> !")
-        exit()
     except:
-        a.close()
         print("Unknown error !")
-        exit()
+    a.close()
