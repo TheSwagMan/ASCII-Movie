@@ -3,10 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/ASCII-Movie.iml" filepath="$PROJECT_DIR$/.idea/ASCII-Movie.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../NymphomathTuring/.idea/NymphomathTuring.iml" filepath="$PROJECT_DIR$/../NymphomathTuring/.idea/NymphomathTuring.iml" />
-      <module fileurl="file://$USER_HOME$/Documents/PythonProjects/.idea/PythonProjects.iml" filepath="$USER_HOME$/Documents/PythonProjects/.idea/PythonProjects.iml" />
-      <module fileurl="file://$USER_HOME$/PycharmProjects/RequestsAndCo/.idea/RequestsAndCo.iml" filepath="$USER_HOME$/PycharmProjects/RequestsAndCo/.idea/RequestsAndCo.iml" />
-      <module fileurl="file://$USER_HOME$/PycharmProjects/SimpleFuzzer/.idea/SimpleFuzzer.iml" filepath="$USER_HOME$/PycharmProjects/SimpleFuzzer/.idea/SimpleFuzzer.iml" />
+      <module fileurl="file://$USER_HOME$/PycharmProjects/Sandbox/.idea/Sandbox.iml" filepath="$USER_HOME$/PycharmProjects/Sandbox/.idea/Sandbox.iml" />
+      <module fileurl="file://$USER_HOME$/PycharmProjects/Turing/.idea/Turing.iml" filepath="$USER_HOME$/PycharmProjects/Turing/.idea/Turing.iml" />
+      <module fileurl="file://$PROJECT_DIR$/../WebCrawler/.idea/WebCrawler.iml" filepath="$PROJECT_DIR$/../WebCrawler/.idea/WebCrawler.iml" />
     </modules>
   </component>
 </project>

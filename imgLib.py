@@ -1,7 +1,7 @@
 #! /usr/bin/python3
 from PIL import Image,ImageDraw,ImageFont
 from symbolBenchmark import FontBenchmark
-import os
+import os,sys
 import pickle as pkl
 
 class SimpleTuple():
@@ -17,9 +17,6 @@ class SimpleTuple():
             else:
                 self.set_data(data)
                 self.set_size(len(data))
-
-    def __reversed__(self):
-        return reversed([e for e in self.get_data()])
 
     def get_mul(self):
         m=1
@@ -61,6 +58,8 @@ class SimpleTuple():
         return "(" + ",".join([str(i) for i in self.get_data()]) + ")"
 
     def set_data(self, data):
+        if type(data)==tuple:
+            data=list(data)
         self._data = data
         return self
 
@@ -107,7 +106,6 @@ class SimpleTuple():
         self.set_data(temp)
         return self
 
-
 class SimplePixel(SimpleTuple):
     def __init__(self, data=None, size=()):
         super().__init__(data, size)
@@ -118,34 +116,42 @@ class SimplePixel(SimpleTuple):
 
 
 class SimplePicture():
-    def __init__(self, data=None, dtype="SP", size=SimpleTuple()):
+    def __init__(self, data=None, dtype="SP", size=SimpleTuple(),nwsize=100):
         self._data = None
-        self._size = None
+        self._size = SimpleTuple()
         if data is None:
             data = []
         if dtype == "SP":
             self.set_data(data)
             self.set_size(size)
         if dtype == "A":
-            self.set_data_from_array(data)
-            self.set_size(size)
+            self.set_data_from_array(data,size)
         if dtype == "2D":
             self.set_data_from_2d(data)
 
     def set_data_from_2d(self, data):
-        temp = []
-        for line in data:
-            for elem in line:
-                temp.append(SimplePixel(elem))
-        self.set_data(temp)
-        self.set_size(SimpleTuple(len(data[0]), len(data)))
+        size=SimpleTuple(len(data[0]), len(data))
+        self.set_data_from_array(to_1D(data),size)
         return self
 
-    def set_data_from_array(self, data):
-        temp = []
-        for pix in data:
-            temp.append(SimplePixel(pix))
+    def set_empty(self,size):
+        self.set_size(size)
+        temp=[]
+        for i in range(self.get_size_mul()):
+            temp.append(SimplePixel([0,0,0]))
         self.set_data(temp)
+
+    def add_pixel(self,pix):
+        self._data.append(pix)
+
+    def clear(self):
+        self.set_data([])
+
+    def set_data_from_array(self, data,size):
+        self.clear()
+        self.set_size(size)
+        for pix in data:
+            self.add_pixel(SimplePixel(pix))
         return self
 
     def set_pixel(self, i, data):
@@ -184,10 +190,10 @@ class SimplePicture():
         return self._size
 
     def get_height(self) -> int:
-        return self.get_size().get_val(0)
+        return self.get_size().get_val(1)
 
     def get_width(self) -> int:
-        return self.get_size().get_val(1)
+        return self.get_size().get_val(0)
 
     def get_size_mul(self) -> int:
         return self.get_size().get_val(0) * self.get_size().get_val(1)
@@ -196,7 +202,7 @@ class SimplePicture():
         if y == None:
             return self.get_data()[x]
         else:
-            return self.get_data()[x * self.get_height() + y]
+            return self.get_data()[x * self.get_width() + y]
 
     def get_pixel_as_int(self, x, y=None):
         if y == None:
@@ -216,58 +222,24 @@ class SimplePicture():
         return self
 
     def resize_width(self,w):
-        h=int(self.get_height()*(w/self.get_width()))
-        self.resize(SimpleTuple(h,w))
+        fact=round(self.get_width()/w)
+        self.resize(SimpleTuple(w,int(self.get_height()/fact)))
         return self
 
     def resize_height(self,h):
-        w=int(self.get_width()*(h/self.get_height()))
-        self.resize(SimpleTuple(h,w))
+        fact=round(self.get_height()/h)
+        self.resize(SimpleTuple(int(self.get_width()/fact),h))
         return self
 
     def resize(self, size):
+        """
+        self.set_data(resize_raw_matrix(self.get_data(),self.get_size().get_data(),size.get_data()))
+        self.set_size(size)
+        """
         a=self.to_Image()
         a = a.resize(size.get_data_as_int_tuple())
-        self.set_data_from_array(list(a.getdata()))
-        self.set_size(size)
-        """
-        to finish
-
-        temp = []
-        n = SimpleTuple(self.get_height() // size.get_val(0), self.get_width() // size.get_val(1))
-        rest = SimpleTuple(self.get_height() - n.get_val(0) * size.get_val(0), self.get_width() - n.get_val(1) * size.get_val(1))
-        offset = (
-            (rest.get_val(0) // 2, rest.get_val(0) // 2 + rest.get_val(0) % 2),
-            (rest.get_val(1) // 2, rest.get_val(1) // 2 + rest.get_val(1) % 2)
-        )
-        print(n,rest,offset)
-        for i in range(0,size.get_mul()):
-            p = [0, 0, 0]
-            if i<size.get_val(0):
-                print(i,"first line")
-            elif i>size.get_mul()-size.get_val(0)-1:
-                print(i,"last lin")
-            elif i % size.get_val(0) == 0:
-                print(i,"first col")
-            elif i % size.get_val(0) == size.get_val(0) - 1:
-                print(i,"last col")
-            else:
-                print(i,"middle")
-            for k in range(n.get_val(0)):
-                for l in range(n.get_val(1)):
-                    index = i * n.get_val(0) + k + l * self.get_width() + i // size.get_val(0) * self.get_width()
-                    cp = self.get_pixel(index)
-                    p[0] += cp.get_val(0)
-                    p[1] += cp.get_val(1)
-                    p[2] += cp.get_val(2)
-            p[0] /= n.get_mul()
-            p[1] /= n.get_mul()
-            p[2] /= n.get_mul()
-
-            temp.append(SimplePixel(p))
-        self.set_size(size)
-        self.set_data(temp)
-        """
+        self.set_data_from_array(list(a.getdata()),size)
+        """#"""
         return self
 
 
@@ -323,11 +295,6 @@ class SimplePicture():
     def to_Image(self):
         temp = Image.new("RGB", self.get_size().get_data_as_int_tuple())
         temp.putdata(self.get_data_as_int_tuple())
-        """
-        for i in range(self.get_size_mul()):
-
-            #temp.putpixel((i%self.get_width(),i%self.get_height()), (self.get_pixel_as_int(i).get_data_as_tuple()))
-        """
         return temp
 
     def copy(self):
@@ -408,16 +375,43 @@ class ASCIIPicture():
             draw.text((int((i%self.get_width())*corrrect_fonsize), int((i//self.get_height())*corrrect_fonsize)), self.get_pixel(i), fg.get_data_as_tuple(), font=font)
         return img
 
+def resize_raw_matrix(mat,osize,nsize):
+    fact = round(osize[0] / nsize[0])
+    resized = []
+    for i in range(nsize[1]):
+        for j in range(nsize[0]):
+            resized.append(mat[i * fact*osize[0]+ j * fact])
+    return resized
 
+def to_1D(m):
+    temp=[]
+    for l in m:
+        temp+=l
+    return temp
+
+
+import time
 if __name__ == "__main__":
     # MAIN PROG
-    fname = sys.argv[1]
+    if len(sys.argv)>1:
+        fname = sys.argv[1]
+    else:
+        fname="swag.jpg"
+    k=time.time()
     img1 = Image.open(fname)
+    print(1,time.time() - k)
+    k=time.time()
     raw_img_rbg = list(img1.getdata())
+    print(2,time.time() - k)
+    k=time.time()
     size = SimpleTuple(img1.width, img1.height)
+    print(3,time.time() - k)
+    k=time.time()
     myimg = SimplePicture(raw_img_rbg, "A", size)
+    print(4,time.time() - k)
+    k=time.time()
     ok = myimg.resize_width(100).change_contrast(2).invert_color().to_ascii().save(fname + ".asciip")
-
+    print(5,time.time()-k)
     # MATRIX COLORS : fg=SimpleTuple(127,255,0),bg=SimpleTuple(0,0,0)
     """
     TODO :
